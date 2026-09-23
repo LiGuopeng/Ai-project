@@ -1,0 +1,18 @@
+services:
+    todo-list-postgres:
+        image: postgres:16-alpine
+        container_name: todo-list-postgres
+        environment:
+            POSTGRES_DB: todo_list
+            POSTGRES_PASSWORD: todo_list_dev
+            POSTGRES_USER: todo_list
+            TZ: Asia/Shanghai
+        ports:
+            - '5433:5432'
+        volumes:
+            - ./postgresql_data:/var/lib/postgresql/data
+        healthcheck:
+            test: ['CMD-SHELL', 'pg_isready -U todo_list -d todo_list']
+            interval: 5s
+            timeout: 5s
+            retries: 10

@@ -1,0 +1,76 @@
+.ui-button {
+    border: 0;
+    border-radius: 12px;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+    min-height: 44px;
+    padding: 0 18px;
+    transition:
+        transform 160ms ease,
+        box-shadow 160ms ease,
+        background 160ms ease;
+}
+
+.ui-button:hover {
+    transform: translateY(-1px);
+}
+
+.ui-button:focus-visible,
+.ui-input:focus-visible,
+.ui-checkbox:focus-visible {
+    outline: 3px solid rgba(24, 183, 157, 0.25);
+    outline-offset: 2px;
+}
+
+.ui-button-primary {
+    background: #18b79d;
+    box-shadow: 0 8px 18px rgba(24, 183, 157, 0.22);
+    color: #fff;
+}
+
+.ui-button-primary:hover {
+    background: #129c86;
+}
+
+.ui-button-secondary {
+    background: #edf4f3;
+    color: #0e665c;
+}
+
+.ui-button-ghost {
+    background: transparent;
+    color: #7d8a91;
+}
+
+.ui-button-ghost:hover {
+    background: #f1f5f4;
+    color: #173b45;
+}
+
+.ui-input {
+    background: #fff;
+    border: 1px solid #dce8e7;
+    border-radius: 12px;
+    color: #173b45;
+    font: inherit;
+    min-height: 44px;
+    padding: 0 14px;
+    transition:
+        border 160ms ease,
+        box-shadow 160ms ease;
+    width: 100%;
+}
+
+.ui-input:focus {
+    border-color: #18b79d;
+    box-shadow: 0 0 0 4px rgba(24, 183, 157, 0.1);
+    outline: 0;
+}
+
+.ui-checkbox {
+    accent-color: #18b79d;
+    cursor: pointer;
+    height: 19px;
+    width: 19px;
+}
