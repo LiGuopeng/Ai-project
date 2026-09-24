@@ -2,9 +2,20 @@ import pg from 'pg'
 
 import { config } from './config'
 
-export const pool = new pg.Pool(config.database)
+const globalForDb = globalThis as unknown as { todoPool?: pg.Pool }
 
-export async function initializeDatabase() {
+export const pool =
+    globalForDb.todoPool ??
+    new pg.Pool({
+        ...config.database,
+        max: 10,
+    })
+
+if (process.env.NODE_ENV !== 'production') {
+    globalForDb.todoPool = pool
+}
+
+export async function ensureSchema() {
     await pool.query(`
         CREATE TABLE IF NOT EXISTS todos (
             id UUID PRIMARY KEY,

@@ -18,13 +18,15 @@ packages:
 | 路径 | 职责 |
 | --- | --- |
 | `apps/frontend/<app>` | 面向用户或其他客户端的前端应用 |
-| `apps/backend/<service>` | 对外提供 API 或后台任务的服务 |
+| `apps/backend/<service>` | Next.js App Router API 服务和后台任务 |
 | `packages/<package>` | 可复用的类型、领域能力、UI 或基础设施包 |
 | `specs/` | 工程规则、架构决策和验证约束 |
 
 新增应用放入 `apps`，可复用能力放入 `packages`。业务实现不得复制到共享包；共享包不得反向依赖具体应用。
 
-涉及持久化业务数据的功能必须同时具备前端应用、后端服务、数据实体/模型、API 契约和本地 Docker 数据库链路。后端尚不存在时，应作为同一功能的一部分创建，不得用 `localStorage` 或前端内存替代。
+涉及持久化业务数据的功能必须同时具备前端应用、Next.js 后端服务、数据实体/模型、API 契约和本地 Docker 数据库链路。后端尚不存在时，应作为同一功能的一部分创建，不得用 `localStorage` 或前端内存替代。
+
+后端技术基线为 Next.js App Router：路由处理器放在 `app/api/**/route.ts`，服务端数据库连接放在 `src/lib` 或等价基础设施目录，领域服务放在 `src/modules`。
 
 ## 3. 依赖管理
 

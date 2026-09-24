@@ -25,7 +25,7 @@ pnpm dev
 ## 目录说明
 
 -   `apps/frontend/web` - Web 应用，按页面、组件、hooks、services、types 分层。
--   `apps/backend/server` - Todo API，按配置、数据库、实体、模块分层。
+-   `apps/backend/server` - Next.js Todo API，使用 App Router Route Handlers。
 -   `packages/core` - Todo 领域类型和数据契约。
 -   `packages/react` - 无业务依赖的共享 React UI 组件。
 
@@ -36,4 +36,4 @@ pnpm dev
 -   健康检查：`http://localhost:8080/api/health`
 -   PostgreSQL：`localhost:5433`，数据库 `todo_list`
 
-首次启动时先执行 `pnpm dev:db`，再执行 `pnpm dev`。数据库表会在 API 服务启动时自动创建；该方式仅用于本地开发，不作为生产迁移方案。
+首次启动时先执行 `pnpm dev:db`，再执行 `pnpm dev`。数据库表会在 Next.js API 首次访问时自动创建；该方式仅用于本地开发，不作为生产迁移方案。

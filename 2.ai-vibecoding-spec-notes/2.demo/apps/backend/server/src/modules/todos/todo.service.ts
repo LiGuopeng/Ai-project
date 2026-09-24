@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto'
 
-import { pool } from '../../database'
 import type { TodoEntity } from '../../entities/todo'
+import { ensureSchema, pool } from '../../lib/db'
 
 interface TodoRow {
     completed: boolean
@@ -20,11 +20,13 @@ function toEntity(row: TodoRow): TodoEntity {
 }
 
 export async function listTodos(): Promise<TodoEntity[]> {
+    await ensureSchema()
     const result = await pool.query<TodoRow>('SELECT id, title, completed, created_at FROM todos ORDER BY created_at DESC')
     return result.rows.map(toEntity)
 }
 
 export async function createTodo(title: string): Promise<TodoEntity> {
+    await ensureSchema()
     const result = await pool.query<TodoRow>('INSERT INTO todos (id, title) VALUES ($1, $2) RETURNING id, title, completed, created_at', [
         randomUUID(),
         title,
@@ -33,6 +35,7 @@ export async function createTodo(title: string): Promise<TodoEntity> {
 }
 
 export async function updateTodo(id: string, changes: { completed?: boolean; title?: string }): Promise<TodoEntity | null> {
+    await ensureSchema()
     const result = await pool.query<TodoRow>(
         `UPDATE todos
          SET title = COALESCE($2, title), completed = COALESCE($3, completed)
@@ -44,10 +47,12 @@ export async function updateTodo(id: string, changes: { completed?: boolean; tit
 }
 
 export async function removeTodo(id: string): Promise<boolean> {
+    await ensureSchema()
     const result = await pool.query('DELETE FROM todos WHERE id = $1', [id])
     return result.rowCount === 1
 }
 
 export async function clearCompletedTodos(): Promise<void> {
+    await ensureSchema()
     await pool.query('DELETE FROM todos WHERE completed = TRUE')
 }

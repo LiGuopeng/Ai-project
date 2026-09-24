@@ -11,7 +11,7 @@
 | `pnpm typecheck` | 执行全量类型检查 |
 | `pnpm lint` | 执行静态检查 |
 | `pnpm spellcheck` | 执行拼写检查 |
-| `pnpm docker:start` / `pnpm docker:stop` | 启停本地基础设施 |
+| `pnpm dev:db` / `pnpm stop:db` | 启停当前 Todo demo 的 PostgreSQL |
 | `pnpm clean` | 清理构建产物和缓存 |
 
 具体应用的过滤命令必须写在该应用文档中，不应被提升为通用规则。当前 Todo demo 使用 `pnpm dev:db` 启动 PostgreSQL，使用 `pnpm stop:db` 停止 PostgreSQL。

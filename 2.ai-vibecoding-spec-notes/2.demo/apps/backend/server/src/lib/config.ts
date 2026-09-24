@@ -6,5 +6,4 @@ export const config = {
         port: Number(process.env.DB_PORT ?? 5433),
         user: process.env.DB_USER ?? 'todo_list',
     },
-    port: Number(process.env.PORT ?? 8080),
 }

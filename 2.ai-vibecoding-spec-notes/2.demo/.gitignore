@@ -2,6 +2,8 @@ node_modules
 dist
 build
 .turbo
+.next
+*.tsbuildinfo
 .DS_Store
 *.local
 *.log

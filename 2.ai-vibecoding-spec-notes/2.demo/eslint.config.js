@@ -7,10 +7,10 @@ const globals = require('globals')
 
 module.exports = tseslint.config(
     {
-        ignores: ['**/dist/**', '**/build/**', '**/*.d.ts'],
+        ignores: ['**/.next/**', '**/dist/**', '**/build/**', '**/*.d.ts'],
     },
     {
-        ignores: ['**/dist/**', '**/build/**', '**/*.d.ts', 'eslint.config.js'],
+        ignores: ['**/.next/**', '**/dist/**', '**/build/**', '**/*.d.ts', 'eslint.config.js'],
         extends: [eslint.configs.recommended, ...tseslint.configs.recommended],
         plugins: {
             prettier,
