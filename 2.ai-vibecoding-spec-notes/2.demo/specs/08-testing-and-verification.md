@@ -11,7 +11,7 @@
 | Markdown、配置、规范 | 结构检查；涉及脚本时运行对应命令 |
 | 类型或公共包 | 全量 typecheck、受影响包 build |
 | 前端页面、路由或 service | 前端 build，手动验证加载、错误和空数据状态 |
-| Next.js API、输入模型或持久化 | 服务端 typecheck/build，启动 Next.js 并验证成功和主要 4xx 路径 |
+| NestJS API、输入模型或持久化 | 服务端 typecheck/build，启动 NestJS 并验证成功和主要 4xx 路径 |
 | 多服务契约 | 各实现启动、接口对照和共享类型检查 |
 | Docker、环境变量或部署 | 配置检查、容器启动/停止、健康接口或连接验证 |
 | 持久化业务功能 | API CRUD、数据库查询、刷新页面后的数据恢复验证 |

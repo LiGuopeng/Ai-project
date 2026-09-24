@@ -1,7 +1,9 @@
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { randomUUID } from 'node:crypto'
 
 import type { TodoEntity } from '../../entities/todo'
-import { ensureSchema, pool } from '../../lib/db'
+import { DatabaseService } from '../../database/database.service'
+import type { UpdateTodoDto } from './dto/update-todo.dto'
 
 interface TodoRow {
     completed: boolean
@@ -10,49 +12,59 @@ interface TodoRow {
     title: string
 }
 
-function toEntity(row: TodoRow): TodoEntity {
-    return {
-        completed: row.completed,
-        createdAt: row.created_at.toISOString(),
-        id: row.id,
-        title: row.title,
+@Injectable()
+export class TodoService {
+    constructor(private readonly database: DatabaseService) {}
+
+    async findAll(): Promise<TodoEntity[]> {
+        const result = await this.database.query<TodoRow>('SELECT id, title, completed, created_at FROM todos ORDER BY created_at DESC')
+        return result.rows.map(row => this.toEntity(row))
     }
-}
 
-export async function listTodos(): Promise<TodoEntity[]> {
-    await ensureSchema()
-    const result = await pool.query<TodoRow>('SELECT id, title, completed, created_at FROM todos ORDER BY created_at DESC')
-    return result.rows.map(toEntity)
-}
+    async create(title: string): Promise<TodoEntity> {
+        const result = await this.database.query<TodoRow>(
+            'INSERT INTO todos (id, title) VALUES ($1, $2) RETURNING id, title, completed, created_at',
+            [randomUUID(), title]
+        )
+        const row = result.rows[0]
+        if (!row) {
+            throw new Error('创建任务失败')
+        }
+        return this.toEntity(row)
+    }
 
-export async function createTodo(title: string): Promise<TodoEntity> {
-    await ensureSchema()
-    const result = await pool.query<TodoRow>('INSERT INTO todos (id, title) VALUES ($1, $2) RETURNING id, title, completed, created_at', [
-        randomUUID(),
-        title,
-    ])
-    return toEntity(result.rows[0]!)
-}
+    async update(id: string, changes: UpdateTodoDto): Promise<TodoEntity> {
+        const result = await this.database.query<TodoRow>(
+            `UPDATE todos
+             SET title = COALESCE($2, title), completed = COALESCE($3, completed)
+             WHERE id = $1
+             RETURNING id, title, completed, created_at`,
+            [id, changes.title ?? null, changes.completed ?? null]
+        )
+        const row = result.rows[0]
+        if (!row) {
+            throw new NotFoundException('任务不存在')
+        }
+        return this.toEntity(row)
+    }
 
-export async function updateTodo(id: string, changes: { completed?: boolean; title?: string }): Promise<TodoEntity | null> {
-    await ensureSchema()
-    const result = await pool.query<TodoRow>(
-        `UPDATE todos
-         SET title = COALESCE($2, title), completed = COALESCE($3, completed)
-         WHERE id = $1
-         RETURNING id, title, completed, created_at`,
-        [id, changes.title ?? null, changes.completed ?? null]
-    )
-    return result.rows[0] ? toEntity(result.rows[0]) : null
-}
+    async remove(id: string): Promise<void> {
+        const result = await this.database.query('DELETE FROM todos WHERE id = $1', [id])
+        if (result.rowCount !== 1) {
+            throw new NotFoundException('任务不存在')
+        }
+    }
 
-export async function removeTodo(id: string): Promise<boolean> {
-    await ensureSchema()
-    const result = await pool.query('DELETE FROM todos WHERE id = $1', [id])
-    return result.rowCount === 1
-}
+    async clearCompleted(): Promise<void> {
+        await this.database.query('DELETE FROM todos WHERE completed = TRUE')
+    }
 
-export async function clearCompletedTodos(): Promise<void> {
-    await ensureSchema()
-    await pool.query('DELETE FROM todos WHERE completed = TRUE')
+    private toEntity(row: TodoRow): TodoEntity {
+        return {
+            completed: row.completed,
+            createdAt: row.created_at.toISOString(),
+            id: row.id,
+            title: row.title,
+        }
+    }
 }

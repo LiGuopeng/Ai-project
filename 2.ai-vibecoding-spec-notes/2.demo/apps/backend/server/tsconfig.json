@@ -2,20 +2,22 @@
     "extends": "../../../tsconfig.json",
     "compilerOptions": {
         "allowJs": false,
+        "allowImportingTsExtensions": false,
+        "allowSyntheticDefaultImports": true,
+        "baseUrl": "./",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
         "incremental": true,
-        "lib": ["ES2020", "DOM", "DOM.Iterable"],
-        "module": "ESNext",
-        "noEmit": true,
-        "plugins": [
-            {
-                "name": "next"
-            }
-        ],
-        "types": ["node", "react", "react-dom"],
-        "esModuleInterop": true,
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "noEmit": false,
+        "outDir": "./dist",
         "resolveJsonModule": true,
-        "jsx": "preserve"
+        "sourceMap": true,
+        "strictPropertyInitialization": false,
+        "target": "ES2021",
+        "types": ["node"]
     },
-    "include": ["next-env.d.ts", ".next/types/**/*.ts", "src/**/*.ts", "src/**/*.tsx"],
-    "exclude": ["node_modules"]
+    "include": ["src/**/*.ts"],
+    "exclude": ["node_modules", "dist"]
 }

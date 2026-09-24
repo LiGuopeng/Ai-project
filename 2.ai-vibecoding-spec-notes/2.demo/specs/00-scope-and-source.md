@@ -12,7 +12,7 @@
 
 - Monorepo：pnpm workspace + Turborepo。
 - 前端基线：React、Vite、路由、服务端状态管理和统一 HTTP 客户端。
-- 服务端基线：Next.js App Router、Route Handlers、模块化服务、PostgreSQL、输入校验、认证和 API 文档。
+- 服务端基线：NestJS、模块化服务、PostgreSQL、输入校验、认证和 API 文档。
 - 共享能力：平台无关类型包、共享 UI 包和单一公开入口。
 - 质量工具：TypeScript、ESLint、Prettier、CSpell、Husky、lint-staged 和 Commitlint。
 
