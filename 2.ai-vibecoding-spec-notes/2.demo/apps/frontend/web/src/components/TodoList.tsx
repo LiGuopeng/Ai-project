@@ -24,8 +24,8 @@ export function TodoList({ onDelete, onToggle, todos }: TodoListProps) {
 
     return (
         <ul className="todo-list">
-            {todos.map(todo => (
-                <TodoItem key={todo.id} onDelete={onDelete} onToggle={onToggle} todo={todo} />
+            {todos.map((todo, index) => (
+                <TodoItem index={index} key={todo.id} onDelete={onDelete} onToggle={onToggle} todo={todo} />
             ))}
         </ul>
     )

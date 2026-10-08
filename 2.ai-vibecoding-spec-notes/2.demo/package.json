@@ -7,6 +7,8 @@
         "build": "turbo build",
         "dev": "turbo dev",
         "dev:db": "docker compose -p todo-list -f .devcontainer/docker-compose.yml up -d",
+        "dev:fastapi": "cd apps/backend/fastapi && python3 -m uvicorn app.main:app --app-dir src --reload --host 0.0.0.0 --port 8081",
+        "dev:springboot": "cd apps/backend/springboot && ./gradlew bootRun",
         "stop:db": "docker compose -p todo-list -f .devcontainer/docker-compose.yml down",
         "typecheck": "turbo typecheck",
         "lint": "eslint .",

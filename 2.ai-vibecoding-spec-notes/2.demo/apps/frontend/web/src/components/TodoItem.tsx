@@ -1,16 +1,21 @@
-import { MoreHorizontal, Trash2 } from 'lucide-react'
+import { MoreHorizontal } from 'lucide-react'
 
 import { Checkbox } from '@todo-list/react'
 
 import type { Todo } from '../types/api'
 
 interface TodoItemProps {
+    index: number
     onDelete: (id: string) => Promise<void>
     onToggle: (id: string) => Promise<void>
     todo: Todo
 }
 
-export function TodoItem({ onDelete, onToggle, todo }: TodoItemProps) {
+export function TodoItem({ index, onDelete, onToggle, todo }: TodoItemProps) {
+    const project = ['Work', 'Work', 'Personal', 'Personal', 'Learning'][index] ?? 'Today'
+    const duration = [15, 30, 10, 20, 25][index] ?? 15
+    const tag = index === 0 ? 'today' : index === 1 ? 'important' : ''
+
     return (
         <li className={`todo-item ${todo.completed ? 'todo-item-completed' : ''}`}>
             <Checkbox
@@ -20,21 +25,14 @@ export function TodoItem({ onDelete, onToggle, todo }: TodoItemProps) {
             />
             <div className="todo-copy">
                 <span className="todo-title">{todo.title}</span>
-                <span className="todo-date">今天 · {todo.completed ? '已完成' : '待处理'}</span>
+                <span className="todo-date">
+                    {project} · {duration} min
+                </span>
             </div>
-            <div className="todo-actions">
-                <button aria-label="更多操作" className="item-icon-button" type="button">
-                    <MoreHorizontal size={18} />
-                </button>
-                <button
-                    aria-label={`删除 ${todo.title}`}
-                    className="item-icon-button item-delete"
-                    onClick={() => onDelete(todo.id)}
-                    type="button"
-                >
-                    <Trash2 size={16} />
-                </button>
-            </div>
+            {tag && <span className={`todo-tag todo-tag-${tag}`}>{tag}</span>}
+            <button aria-label={`删除 ${todo.title}`} className="item-icon-button" onClick={() => onDelete(todo.id)} type="button">
+                <MoreHorizontal size={18} />
+            </button>
         </li>
     )
 }

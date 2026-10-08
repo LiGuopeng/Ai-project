@@ -18,15 +18,15 @@ packages:
 | 路径 | 职责 |
 | --- | --- |
 | `apps/frontend/<app>` | 面向用户或其他客户端的前端应用 |
-| `apps/backend/<service>` | NestJS API 服务和后台任务 |
+| `apps/backend/<service>` | NestJS、FastAPI、Spring Boot 等 API 服务和后台任务 |
 | `packages/<package>` | 可复用的类型、领域能力、UI 或基础设施包 |
 | `specs/` | 工程规则、架构决策和验证约束 |
 
 新增应用放入 `apps`，可复用能力放入 `packages`。业务实现不得复制到共享包；共享包不得反向依赖具体应用。
 
-涉及持久化业务数据的功能必须同时具备前端应用、NestJS 后端服务、数据实体/模型、API 契约和本地 Docker 数据库链路。后端尚不存在时，应作为同一功能的一部分创建，不得用 `localStorage` 或前端内存替代。
+涉及持久化业务数据的功能必须同时具备前端应用、后端服务、数据实体/模型、API 契约和本地 Docker 数据库链路。后端尚不存在时，应作为同一功能的一部分创建，不得用 `localStorage` 或前端内存替代。
 
-后端技术基线为 NestJS：入口位于 `src/main.ts`，模块位于 `src/modules`，Controller 负责 HTTP 边界，Service 负责业务逻辑，数据库连接放在 `src/database` 或等价基础设施目录。
+后端技术基线包含 NestJS、FastAPI 和 Spring Boot：NestJS 入口位于 `src/main.ts`，按 Module、Controller、Service、DTO 分层；FastAPI 入口位于 `src/app/main.py`，按 Router、Service、Schema、Repository 分层；Spring Boot 入口位于 `src/main/java`，按 Controller、Service、Repository、DTO 分层。三者的 API 契约和数据库模型保持一致。
 
 ## 3. 依赖管理
 

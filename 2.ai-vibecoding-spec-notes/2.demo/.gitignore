@@ -4,6 +4,12 @@ build
 .turbo
 .next
 *.tsbuildinfo
+.venv
+__pycache__
+.pytest_cache
+.coverage
+.env
+.gradle
 .DS_Store
 *.local
 *.log

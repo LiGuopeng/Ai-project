@@ -1,120 +1,64 @@
-import { Filter, SlidersHorizontal } from 'lucide-react'
+import { Ellipsis, Plus, Star } from 'lucide-react'
 import { useState } from 'react'
 
-import { Button } from '@todo-list/react'
-
 import { Sidebar } from '../../components/Sidebar'
-import { StatsCard } from '../../components/StatsCard'
 import { TodoInput } from '../../components/TodoInput'
 import { TodoList } from '../../components/TodoList'
 import { Topbar } from '../../components/Topbar'
 import { useTodos } from '../../hooks/useTodos'
-import type { TodoStatus } from '../../types/api'
-
-const filters: Array<{ label: string; value: TodoStatus }> = [
-    { label: '全部', value: 'all' },
-    { label: '进行中', value: 'active' },
-    { label: '已完成', value: 'completed' },
-]
 
 export default function Dashboard() {
-    const [isCompact, setIsCompact] = useState(false)
-    const {
-        activeCount,
-        addTodo,
-        clearCompleted,
-        completedCount,
-        deleteTodo,
-        error,
-        isLoading,
-        reloadTodos,
-        setStatus,
-        status,
-        todos,
-        totalCount,
-        toggleTodo,
-    } = useTodos()
+    const [isAdding, setIsAdding] = useState(false)
+    const { activeCount, addTodo, completedCount, deleteTodo, error, isLoading, reloadTodos, todos, toggleTodo } = useTodos()
 
     return (
         <div className="app-shell">
-            <Sidebar activeCount={activeCount} onAllTodos={() => setStatus('all')} />
+            <Sidebar activeCount={activeCount} onAllTodos={() => undefined} onCompleted={() => undefined} />
             <main className="main-content">
                 <Topbar />
-                <div className="dashboard-grid">
-                    <section className="content-column">
-                        <div className="section-heading">
-                            <div>
-                                <p className="eyebrow">我的空间 / 今日</p>
-                                <h2>我的任务</h2>
-                            </div>
-                            <span className="task-count">{activeCount} 个待完成</span>
+                <div className="today-content">
+                    <div className="page-title-row">
+                        <div className="page-title-left">
+                            <Star className="today-star" size={25} />
+                            <h1>Today</h1>
+                            <span>{activeCount} tasks</span>
                         </div>
-                        <TodoInput onAdd={addTodo} />
-                        <div className="list-toolbar">
-                            <div className="filter-tabs" role="tablist" aria-label="任务筛选">
-                                {filters.map(filter => (
-                                    <button
-                                        aria-selected={status === filter.value}
-                                        className={status === filter.value ? 'filter-tab filter-tab-active' : 'filter-tab'}
-                                        key={filter.value}
-                                        onClick={() => setStatus(filter.value)}
-                                        role="tab"
-                                        type="button"
-                                    >
-                                        {filter.label}
-                                        {filter.value === 'active' && <span>{activeCount}</span>}
-                                    </button>
-                                ))}
-                            </div>
-                            <div className="toolbar-actions">
-                                <button aria-label="筛选任务" className="toolbar-icon" type="button">
-                                    <Filter size={16} />
-                                </button>
-                                <button
-                                    aria-label="切换紧凑模式"
-                                    className={`toolbar-icon ${isCompact ? 'toolbar-icon-active' : ''}`}
-                                    onClick={() => setIsCompact(value => !value)}
-                                    type="button"
-                                >
-                                    <SlidersHorizontal size={16} />
+                        <button aria-label="More actions" className="plain-icon-button" type="button">
+                            <Ellipsis size={22} />
+                        </button>
+                    </div>
+                    <div className="daily-summary">You have a clear path today. Keep the momentum going!</div>
+                    <section className="tasks-section" aria-label="Today tasks">
+                        {error ? (
+                            <div className="request-state request-state-error">
+                                <p>{error}</p>
+                                <button onClick={() => void reloadTodos()} type="button">
+                                    Reload
                                 </button>
                             </div>
-                        </div>
-                        <div className={isCompact ? 'todo-panel todo-panel-compact' : 'todo-panel'}>
-                            {error ? (
-                                <div className="request-state request-state-error">
-                                    <p>{error}</p>
-                                    <Button onClick={() => void reloadTodos()} variant="secondary">
-                                        重新加载
-                                    </Button>
-                                </div>
-                            ) : isLoading ? (
-                                <div className="request-state">
-                                    <div className="loading-dot" />
-                                    <p>正在加载任务...</p>
-                                </div>
-                            ) : (
-                                <TodoList onDelete={deleteTodo} onToggle={toggleTodo} todos={todos} />
-                            )}
-                            {!isLoading && !error && completedCount > 0 && (
-                                <div className="list-footer">
-                                    <span>{completedCount} 个任务已完成</span>
-                                    <Button onClick={clearCompleted} variant="ghost">
-                                        清除已完成
-                                    </Button>
-                                </div>
-                            )}
-                        </div>
+                        ) : isLoading ? (
+                            <div className="request-state">
+                                <div className="loading-dot" />
+                                <p>Loading tasks...</p>
+                            </div>
+                        ) : (
+                            <TodoList onDelete={deleteTodo} onToggle={toggleTodo} todos={todos} />
+                        )}
                     </section>
-                    <aside className="right-column">
-                        <StatsCard activeCount={activeCount} completedCount={completedCount} totalCount={totalCount} />
-                        <section className="focus-card">
-                            <div className="focus-orb" />
-                            <p className="eyebrow">今日小提醒</p>
-                            <h3>一次只做一件事，也是一种效率。</h3>
-                            <p>把注意力放在眼前的任务上，完成之后再走向下一步。</p>
-                        </section>
-                    </aside>
+                    {isAdding ? (
+                        <TodoInput
+                            onAdd={async title => {
+                                await addTodo(title)
+                                setIsAdding(false)
+                            }}
+                        />
+                    ) : (
+                        <button className="add-task-button" onClick={() => setIsAdding(true)} type="button">
+                            <Plus size={17} />
+                            Add a task
+                        </button>
+                    )}
+                    {completedCount > 0 && <span className="completed-hint">{completedCount} completed</span>}
                 </div>
             </main>
         </div>

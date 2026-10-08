@@ -26,9 +26,9 @@
 
 ## 4. 架构基线
 
-默认采用 pnpm workspace + Turborepo Monorepo：`packages/*` 放共享包，`apps/frontend/*` 放前端应用，`apps/backend/*` 放后端应用。共享类型和 UI 能力进入独立包；前端通过 `pages`、`components`、`hooks`、`services`、`types`、`router` 分层；后端使用 NestJS，按 `module/controller/service/dto` 分层组织，数据库访问放在基础设施模块中。
+默认采用 pnpm workspace + Turborepo Monorepo：`packages/*` 放共享包，`apps/frontend/*` 放前端应用，`apps/backend/*` 放后端应用。共享类型和 UI 能力进入独立包；前端通过 `pages`、`components`、`hooks`、`services`、`types`、`router` 分层；当前后端实现包括 NestJS、FastAPI 和 Spring Boot，分别按各自框架的模块、路由/控制器、服务、输入模型和数据库基础设施分层组织。
 
-后端 API 使用 NestJS Controller、统一路由前缀、明确的认证方案、输入校验、统一异常处理和 API 文档；不同服务实现同一契约时，必须保持接口、鉴权和数据模型一致。
+后端 API 使用 NestJS Controller、FastAPI Router 或 Spring Boot Controller、统一路由前缀、明确的认证方案、输入校验、统一异常处理和 API 文档；不同服务实现同一契约时，必须保持接口、鉴权和数据模型一致。
 
 ## 5. 必读细则
 

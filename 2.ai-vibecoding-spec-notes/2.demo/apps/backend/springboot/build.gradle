@@ -1,0 +1,44 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.4.1'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.todo.list'
+version = '1.0.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    runtimeOnly 'org.postgresql:postgresql'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+// 本地数据库在回环地址上运行，避免桌面代理设置接管 JDBC 连接。
+tasks.named('bootRun') {
+    jvmArgs(
+            '-Djava.net.useSystemProxies=false',
+            '-DsocksProxyHost=',
+            '-DsocksProxyPort=',
+            '-Dhttp.proxyHost=',
+            '-Dhttp.proxyPort=',
+            '-Dhttps.proxyHost=',
+            '-Dhttps.proxyPort='
+    )
+}

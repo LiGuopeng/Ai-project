@@ -1,4 +1,4 @@
-# 后端实现规范（NestJS）
+# 后端实现规范（NestJS、FastAPI、Spring Boot）
 
 ## 0. 技术基线
 
@@ -34,10 +34,14 @@ NestJS 入口应完成配置加载、全局 ValidationPipe、统一异常处理�
 
 数据库连接使用 NestJS 基础设施模块并复用连接池，避免每次热更新创建新连接。Controller 只处理参数校验、状态码和响应；数据库查询放在 Service 或 Repository；环境变量只在服务端读取。
 
-## 5. Python 服务模式
+## 5. FastAPI 服务模式
 
-若使用 Python Web 框架，建议将配置、数据库会话、模型、输入输出 schema、路由和安全逻辑分别放入独立模块。路由只负责 HTTP 编排，数据库 session 通过依赖注入并在请求结束后关闭；不同语言的服务必须遵守同一 API 契约。
+FastAPI 入口放在 `src/app/main.py`，路由放在模块的 `router.py`，输入输出模型放在 `schemas.py`，业务逻辑放在 `service.py`，SQL 和连接池访问放在 `repository.py` 或数据库基础设施层。使用应用 lifespan 初始化和关闭连接池，使用依赖注入获取 Service；不同语言的服务必须遵守同一 API 契约。
 
-## 6. 安全边界
+## 6. Spring Boot 服务模式
+
+Spring Boot 入口放在 `src/main/java`，Controller 负责 HTTP 边界，Service 负责业务规则，Repository 负责数据库访问，Request/Response DTO 负责输入输出模型。使用 Bean Validation 校验请求，使用配置文件和环境变量管理连接信息，使用连接池访问 PostgreSQL；生产环境使用迁移工具而不是依赖启动时自动建表。
+
+## 7. 安全边界
 
 凭证和密钥使用安全存储；认证必须校验签名、过期时间和主体有效性；授权必须在服务端执行。日志不得记录密码、token、完整 Authorization header、数据库密码或敏感请求体。

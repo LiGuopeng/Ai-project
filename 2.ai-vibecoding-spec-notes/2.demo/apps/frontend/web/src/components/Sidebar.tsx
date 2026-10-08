@@ -1,50 +1,76 @@
-import { CheckSquare, CircleHelp, LayoutDashboard, Settings, Sparkles } from 'lucide-react'
+import { Archive, CalendarDays, Inbox, Layers3, Plus, Search, Star } from 'lucide-react'
 
 interface SidebarProps {
     activeCount: number
     onAllTodos: () => void
+    onCompleted: () => void
 }
 
-export function Sidebar({ activeCount, onAllTodos }: SidebarProps) {
+export function Sidebar({ activeCount, onAllTodos, onCompleted }: SidebarProps) {
     return (
         <aside className="sidebar">
-            <div className="brand">
-                <div className="brand-mark">
-                    <Sparkles size={18} strokeWidth={2.5} />
-                </div>
-                <span>noto</span>
+            <div className="brand-row">
+                <div className="brand-mark" />
+                <span>focus</span>
             </div>
 
-            <nav className="sidebar-nav" aria-label="主导航">
+            <label className="sidebar-search">
+                <Search size={16} />
+                <input aria-label="Quick find" placeholder="Quick find" />
+            </label>
+
+            <nav className="sidebar-nav" aria-label="Primary navigation">
+                <button className="nav-item" onClick={onAllTodos} type="button">
+                    <Inbox size={17} />
+                    <span>Inbox</span>
+                    <small>7</small>
+                </button>
                 <button className="nav-item nav-item-active" onClick={onAllTodos} type="button">
-                    <LayoutDashboard size={18} />
-                    <span>我的清单</span>
-                    <strong>{activeCount}</strong>
+                    <Star size={17} />
+                    <span>Today</span>
+                    <small>{activeCount}</small>
                 </button>
                 <button className="nav-item" type="button">
-                    <CheckSquare size={18} />
-                    <span>已完成</span>
+                    <CalendarDays size={17} />
+                    <span>Upcoming</span>
+                    <small>3</small>
+                </button>
+                <button className="nav-item" onClick={onAllTodos} type="button">
+                    <Layers3 size={17} />
+                    <span>Anytime</span>
+                </button>
+                <button className="nav-item" onClick={onCompleted} type="button">
+                    <Archive size={17} />
+                    <span>Someday</span>
                 </button>
             </nav>
 
-            <div className="sidebar-bottom">
-                <button className="nav-item" type="button">
-                    <Settings size={18} />
-                    <span>设置</span>
-                </button>
-                <button className="nav-item" type="button">
-                    <CircleHelp size={18} />
-                    <span>帮助中心</span>
-                </button>
-                <div className="profile-card">
-                    <div className="avatar">L</div>
-                    <div>
-                        <strong>Li Guopeng</strong>
-                        <span>专注每一天</span>
-                    </div>
-                    <button aria-label="打开个人菜单" className="profile-menu" type="button">
-                        ···
-                    </button>
+            <div className="sidebar-divider" />
+
+            <section className="projects" aria-label="Projects">
+                <div className="projects-heading">
+                    <span>PROJECTS</span>
+                    <Plus size={15} />
+                </div>
+                <div className="project-item">
+                    <i className="project-dot project-dot-blue" />
+                    Work
+                </div>
+                <div className="project-item">
+                    <i className="project-dot project-dot-orange" />
+                    Personal
+                </div>
+                <div className="project-item">
+                    <i className="project-dot project-dot-green" />
+                    Learning
+                </div>
+            </section>
+
+            <div className="profile-card">
+                <div className="avatar">A</div>
+                <div>
+                    <strong>Alex Morgan</strong>
+                    <span>Personal workspace</span>
                 </div>
             </div>
         </aside>

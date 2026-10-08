@@ -15,6 +15,8 @@ pnpm dev
 ## 常用命令
 
 -   `pnpm dev` - 启动 Vite 和 API 开发服务。
+-   `pnpm dev:fastapi` - 单独启动 FastAPI API（端口 `8081`）。
+-   `pnpm dev:springboot` - 单独启动 Spring Boot API（端口 `8082`）。
 -   `pnpm dev:db` - 启动本地 Docker PostgreSQL。
 -   `pnpm stop:db` - 停止本地 Docker PostgreSQL。
 -   `pnpm build` - 按依赖拓扑构建共享包和前端应用。
@@ -26,6 +28,8 @@ pnpm dev
 
 -   `apps/frontend/web` - Web 应用，按页面、组件、hooks、services、types 分层。
 -   `apps/backend/server` - NestJS Todo API，按 Module、Controller、Service 和 DTO 分层。
+-   `apps/backend/fastapi` - FastAPI Todo API，按 Router、Service、Schema、Repository 分层。
+-   `apps/backend/springboot` - Spring Boot Todo API，按 Controller、Service、Repository 和 DTO 分层。
 -   `packages/core` - Todo 领域类型和数据契约。
 -   `packages/react` - 无业务依赖的共享 React UI 组件。
 
@@ -33,7 +37,9 @@ pnpm dev
 
 -   Web：`http://localhost:5173`
 -   API：`http://localhost:8080/api`
+-   FastAPI API：`http://localhost:8081/api`
+-   Spring Boot API：`http://localhost:8082/api`
 -   健康检查：`http://localhost:8080/api/health`
 -   PostgreSQL：`localhost:5433`，数据库 `todo_list`
 
-首次启动时先执行 `pnpm dev:db`，再执行 `pnpm dev`。数据库表会在 NestJS 应用启动时自动创建；该方式仅用于本地开发，不作为生产迁移方案。
+首次启动时先执行 `pnpm dev:db`，再执行 `pnpm dev`。如需验证 FastAPI，先在 `apps/backend/fastapi` 创建虚拟环境并安装依赖：`python3 -m venv .venv && .venv/bin/pip install -e '.[dev]'`，再执行 `pnpm dev:fastapi`。如需验证 Spring Boot，执行 `pnpm dev:springboot`。数据库表会在 NestJS、FastAPI 或 Spring Boot 应用启动时自动创建；该方式仅用于本地开发，不作为生产迁移方案。

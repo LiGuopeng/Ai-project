@@ -29,7 +29,7 @@ export function TodoInput({ onAdd }: TodoInputProps) {
             />
             <Button type="submit">
                 <Plus size={18} />
-                添加任务
+                Add task
             </Button>
         </form>
     )
