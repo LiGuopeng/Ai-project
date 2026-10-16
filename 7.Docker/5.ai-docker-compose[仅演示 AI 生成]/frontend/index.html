@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Docker Compose 全栈演示</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    :root { font-family: system-ui, sans-serif; color: #172033; background: #f2f6fc; }
+    body { margin: 0; }
+    main { width: min(760px, calc(100% - 40px)); margin: 70px auto; }
+    .card { padding: 36px; border-radius: 20px; background: #fff; box-shadow: 0 16px 50px #183b641c; }
+    h1 { margin-top: 0; color: #2456d6; }
+    p { line-height: 1.7; color: #526078; }
+    button { border: 0; border-radius: 10px; padding: 12px 18px; color: #fff; background: #2456d6; cursor: pointer; }
+    pre { padding: 18px; overflow: auto; border-radius: 12px; background: #101827; color: #dbeafe; }
+    code { color: #2456d6; }
+  </style>
+</head>
+<body>
+  <main id="root"></main>
+  <script type="text/babel">
+    function App() {
+      const [result, setResult] = React.useState(null);
+
+      async function checkServices() {
+        setResult({ loading: true });
+        const response = await fetch('/api/health');
+        setResult(await response.json());
+      }
+
+      return (
+        <section className="card">
+          <h1>Docker Compose 全栈演示</h1>
+          <p>前端由 Caddy 提供，React 通过 CDN 加载；Node.js API、PostgreSQL 和 Redis 由 Docker Compose 编排。</p>
+          <p>点击按钮检查 API、PostgreSQL 和 Redis 是否正常连接。</p>
+          <button onClick={checkServices}>检查后端服务</button>
+          {result && <pre>{JSON.stringify(result, null, 2)}</pre>}
+        </section>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>

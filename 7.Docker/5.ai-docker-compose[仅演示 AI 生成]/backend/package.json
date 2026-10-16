@@ -1,0 +1,13 @@
+{
+  "name": "ai-docker-compose-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Node.js API demo with PostgreSQL and Redis",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "pg": "^8.13.1",
+    "redis": "^4.7.0"
+  }
+}

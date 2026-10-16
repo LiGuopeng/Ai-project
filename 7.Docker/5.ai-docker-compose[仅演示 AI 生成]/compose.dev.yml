@@ -1,0 +1,4 @@
+services:
+  backend:
+    ports:
+      - "${API_PORT:-3000}:${API_CONTAINER_PORT:-3000}"
