@@ -23,6 +23,13 @@ describe('AppController (e2e)', () => {
       .expect('Hello World!');
   });
 
+  it('/deleteHello (DELETE)', () => {
+    return request(app.getHttpServer())
+      .delete('/deleteHello')
+      .expect(200)
+      .expect('deleteHello');
+  });
+
   afterEach(async () => {
     await app.close();
   });
