@@ -3,6 +3,9 @@ import { createObserveModule } from '@nestjs/observe';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import { RequestLoggerMiddleware } from './middlewares/request-logger.middleware.js';
+import { UserModule } from './user/user.module.js';
+import { UserController } from './user/user.controller.js';
+import { UserService } from './user/user.service.js';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -15,9 +18,10 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
       appSecret: 'YOUR_APP_SECRET',
       serviceId: '1.basic',
     }),
+    UserModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, UserController],
+  providers: [AppService, UserService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {

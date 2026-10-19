@@ -4,6 +4,7 @@ import type { NestMiddleware } from '@nestjs/common';
 
 /** 记录请求信息，并为每次请求生成唯一的追踪 ID。 */
 export class RequestLoggerMiddleware implements NestMiddleware {
+  /** 记录请求信息，并为每次请求生成唯一的追踪 ID。 */
   use(request: Request, response: Response, next: NextFunction): void {
     const requestId = randomUUID();
     const startedAt = performance.now();
@@ -15,7 +16,7 @@ export class RequestLoggerMiddleware implements NestMiddleware {
     response.on('finish', () => {
       const duration = Math.round(performance.now() - startedAt);
       console.log(
-        `[HTTP] ${request.method} ${request.originalUrl} ${response.statusCode} ${duration}ms requestId=${requestId}`,
+        `[HTTP-----] ${request.method} ${request.originalUrl} ${response.statusCode} ${duration}ms requestId=${requestId}`,
       );
     });
 
