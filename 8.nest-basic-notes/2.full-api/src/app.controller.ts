@@ -4,11 +4,13 @@ import {
   Post,
   Put,
   Delete,
+  BadRequestException,
   Param,
   Query,
   Body,
 } from '@nestjs/common';
 import { AppService } from './app.service.js';
+import { ParsePositiveIntPipe } from './pipes/parse-positive-int.pipe.js';
 
 @Controller('guopeng')
 export class AppController {
@@ -18,6 +20,17 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
+
+  @Get('filter-demo')
+  getFilterDemo(): never {
+    throw new BadRequestException('这是一个异常过滤器示例');
+  }
+
+  @Get('pipe-demo/:id')
+  getPipeDemo(@Param('id', ParsePositiveIntPipe) id: number): string {
+    return `Pipe 转换后的 id: ${id}`;
+  }
+
   @Get(':id')
   getHelloDetail(
     @Param('id') id: string,
