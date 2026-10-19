@@ -1,0 +1,40 @@
+{
+  "name": "nest-pg-production-demo",
+  "version": "1.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "scripts": {
+    "build": "nest build",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "start:prod": "node dist/main.js",
+    "lint": "oxlint --type-aware src/ test/",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "docker:up": "docker compose -f docker/docker-compose.yml -p nest-pg up -d",
+    "docker:down": "docker compose -f docker/docker-compose.yml -p nest-pg down"
+  },
+  "dependencies": {
+    "@nestjs/common": "^12.0.1",
+    "@nestjs/config": "^12.0.1",
+    "@nestjs/core": "^12.0.1",
+    "@nestjs/platform-express": "^12.0.1",
+    "pg": "^8.13.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^12.0.0",
+    "@nestjs/testing": "^12.0.1",
+    "@types/node": "^24.0.0",
+    "@types/pg": "^8.13.0",
+    "oxlint": "^1.58.0",
+    "oxlint-tsgolint": "^7.0.2001",
+    "prettier": "^3.4.2",
+    "typescript": "^6.0.2",
+    "vite": "^8.0.0",
+    "vitest": "^4.1.2"
+  }
+}
