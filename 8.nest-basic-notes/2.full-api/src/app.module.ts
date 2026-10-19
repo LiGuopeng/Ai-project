@@ -2,7 +2,7 @@ import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/c
 import { createObserveModule } from '@nestjs/observe';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
-import { RequestLoggerMiddleware } from './common/middleware/request-logger.middleware.js';
+import { RequestLoggerMiddleware } from './middlewares/request-logger.middleware.js';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
