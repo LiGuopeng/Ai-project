@@ -1,0 +1,42 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 对象实体（对应 2.nest-orm 中的 src/entities）
+model User {
+  id       Int         @id @default(autoincrement())
+  name     String      @db.VarChar(20)
+  password String      @db.VarChar(20)
+  status   Boolean
+  photos   Photo[]
+  detail   UserDetail?
+
+  @@map("user")
+}
+
+model Photo {
+  id     Int    @id @default(autoincrement())
+  url    String @db.VarChar(80)
+  userId Int
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@map("photo")
+}
+
+model UserDetail {
+  id     Int      @id @default(autoincrement())
+  hobby  Json
+  status Boolean
+  userId Int      @unique
+  user   User     @relation(fields: [userId], references: [id])
+
+  @@map("userdetail")
+}
